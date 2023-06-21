@@ -1,6 +1,17 @@
 const express = require("express");
 const router = express.Router();
+
 const User = require("../schemas/user.js");
+// const authMiddleware = require("../middlewares/auth-middleware.js");
+
+// // 내 정보 조회 API
+// router.get("/login/me", authMiddleware, async (req, res) => {
+//   const { nickname } = res.locals.user;
+
+//   res.status(200).json({
+//     user: { nickname }
+//   });
+// });
 
 // 회원 가입 API
 router.post("/signup", async (req, res) => {

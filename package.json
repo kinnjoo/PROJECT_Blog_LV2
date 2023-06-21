@@ -1,23 +1,25 @@
 {
   "name": "project_blog-backend-server",
   "version": "1.0.0",
-  "description": "노드 입문 주차 개인 프로젝트",
+  "description": "노드 숙련 주차 개인 프로젝트(LV2)",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kinnjoo/PROJECT_BlogBackendServer.git"
+    "url": "git+https://github.com/kinnjoo/PROJECT_Blog_LV2.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kinnjoo/PROJECT_BlogBackendServer/issues"
+    "url": "https://github.com/kinnjoo/PROJECT_Blog_LV2/issues"
   },
-  "homepage": "https://github.com/kinnjoo/PROJECT_BlogBackendServer#readme",
+  "homepage": "https://github.com/kinnjoo/PROJECT_Blog_LV2#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.2.4"
   }
 }

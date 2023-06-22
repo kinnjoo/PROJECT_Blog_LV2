@@ -20,9 +20,9 @@ module.exports = async (req, res, next) => {
     const { userId } = jwt.verify(authToken, "customized-secret-key");
 
     // authToken에 있는 userId에 해당하는 사용자가 실제 DB에 존재하는지 확인
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).exec();
+    // console.log(user);
     res.locals.user = user;
-    console.log(res.locals.user);
 
     next();
   } catch (error) {

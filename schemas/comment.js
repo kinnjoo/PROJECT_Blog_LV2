@@ -1,14 +1,18 @@
 const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema({
-  user: {
+  nickname: {
     type: String,
-    required: true
+    ref: "User"
   },
   password: {
     type: String,
-    required: true
+    ref: "User"
   },
+  // userId: {
+  //   type: String,
+  //   ref: "User"
+  // },
   content: {
     type: String,
     required: true
@@ -18,7 +22,8 @@ const commentSchema = new mongoose.Schema({
     default: () => Date.now()
   },
   postId: {
-    type: String
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Post"
   }
 });
 

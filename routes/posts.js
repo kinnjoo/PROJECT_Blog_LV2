@@ -27,7 +27,7 @@ router.get('/posts/:postId', async (req, res) => {
   const { postId } = req.params;
 
   if (!ObjectId.isValid(postId)) {
-    res.status(400).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+    return res.status(400).json({ errorMessage: "postId 형식이 올바르지 않습니다." });
   }
 
   const detail = await Posts.findOne({ _id: postId });
@@ -52,7 +52,7 @@ router.post("/posts", authMiddleware, async (req, res) => {
   const { title, content } = req.body;
 
   if (!title || !content) {
-    return res.status(400).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+    return res.status(400).json({ errorMessage: "게시글 제목 또는 내용이 비어있습니다." });
   } else {
     await Posts.create({ title, content, nickname });
     return res.status(200).json({ message: "게시글을 생성하였습니다." });
@@ -65,8 +65,8 @@ router.put("/posts/:postId", authMiddleware, async (req, res) => {
   const { postId } = req.params;
   const { title, content } = req.body;
 
-  if (!ObjectId.isValid(postId) || !title || !content) {
-    return res.status(412).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+  if (!ObjectId.isValid(postId)) {
+    return res.status(400).json({ errorMessage: "postId 형식이 올바르지 않습니다." });
   }
 
   const findPostId = await Posts.findOne({ _id: postId });
@@ -75,6 +75,8 @@ router.put("/posts/:postId", authMiddleware, async (req, res) => {
     return res.status(404).json({ errorMessage: "게시글 조회에 실패하였습니다." })
   } else if (user.nickname !== findPostId.nickname) {
     return res.status(403).json({ errorMessage: "게시글의 수정 권한이 존재하지 않습니다." });
+  } else if (!title || !content) {
+    return res.status(412).json({ errorMessage: "게시글 제목 또는 내용이 비어있습니다." });
   } else {
     await Posts.updateOne(
       { _id: postId },
@@ -87,11 +89,11 @@ router.put("/posts/:postId", authMiddleware, async (req, res) => {
 router.delete("/posts/:postId", authMiddleware, async (req, res) => {
   const user = res.locals.user;
   const { postId } = req.params;
-  // const { password } = req.body;
 
   if (!ObjectId.isValid(postId)) {
-    return res.status(412).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+    return res.status(400).json({ errorMessage: "postId 형식이 올바르지 않습니다." });
   }
+
   const findPostId = await Posts.findOne({ _id: postId });
 
   if (!findPostId) {

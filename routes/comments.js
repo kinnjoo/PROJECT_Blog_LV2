@@ -13,11 +13,12 @@ router.get("/comments/:postId", async (req, res) => {
   const { postId } = req.params;
 
   const comments = await Comments.find({}).sort({ createdAt: -1 });
-  const findPostId = await Posts.findOne({ _id: postId });
 
   if (!ObjectId.isValid(postId)) {
-    return res.status(400).json({ message: "데이터 형식이 올바르지 않습니다." });
+    return res.status(400).json({ message: "postId 형식이 올바르지 않습니다." });
   }
+
+  const findPostId = await Posts.findOne({ _id: postId });
 
   if (findPostId) {
     const commentList = comments.map((comment) => {
@@ -41,12 +42,16 @@ router.post("/comments/:postId", authMiddleware, async (req, res) => {
   const { postId } = req.params;
   const { content } = req.body;
 
+  if (!ObjectId.isValid(postId)) {
+    return res.status(400).json({ message: "postId 형식이 올바르지 않습니다." });
+  }
+
   const findPostId = await Posts.findOne({ _id: postId });
 
-  if (!ObjectId.isValid(postId) || !content) {
-    return res.status(412).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
-  } else if (!findPostId) {
+  if (!findPostId) {
     return res.status(404).json({ errorMessage: "게시글 조회에 실패하였습니다." });
+  } else if (!content) {
+    return res.status(412).json({ errorMessage: "댓글 내용이 비어있습니다." });
   } else {
     await Comments.create({ content, nickname });
     return res.status(200).json({ message: "댓글을 생성하였습니다." });
@@ -60,7 +65,7 @@ router.put("/comments/:commentId", authMiddleware, async (req, res) => {
   const { content } = req.body;
 
   if (!ObjectId.isValid(commentId)) {
-    return res.status(400).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+    return res.status(400).json({ errorMessage: "commentId 형식이 올바르지 않습니다." });
   }
 
   const findCommentId = await Comments.findOne({ _id: commentId });
@@ -70,9 +75,8 @@ router.put("/comments/:commentId", authMiddleware, async (req, res) => {
   } else if (user.nickname !== findCommentId.nickname) {
     return res.status(403).json({ errorMessage: "댓글의 수정 권한이 존재하지 않습니다." });
   } else if (!content) {
-    return res.status()
-  }
-  else {
+    return res.status(412).json({ errorMessage: "댓글 내용이 비어있습니다." });
+  } else {
     await Comments.updateOne(
       { _id: commentId },
       { $set: { content: content } });
@@ -86,7 +90,7 @@ router.delete("/comments/:commentId", authMiddleware, async (req, res) => {
   const { commentId } = req.params;
 
   if (!ObjectId.isValid(commentId)) {
-    return res.status(412).json({ message: "데이터 형식이 올바르지 않습니다." });
+    return res.status(400).json({ message: "commentId 형식이 올바르지 않습니다." });
   }
 
   const findCommentId = await Comments.findOne({ _id: commentId });

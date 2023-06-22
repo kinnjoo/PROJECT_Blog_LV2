@@ -2,16 +2,6 @@ const express = require("express");
 const router = express.Router();
 
 const User = require("../schemas/user.js");
-// const authMiddleware = require("../middlewares/auth-middleware.js");
-
-// // 내 정보 조회 API
-// router.get("/login/me", authMiddleware, async (req, res) => {
-//   const { nickname } = res.locals.user;
-
-//   res.status(200).json({
-//     user: { nickname }
-//   });
-// });
 
 // 회원 가입 API
 router.post("/signup", async (req, res) => {
@@ -28,7 +18,7 @@ router.post("/signup", async (req, res) => {
   if (password.length < 4) {
     return res.status(412).json(({ errorMessage: "패스워드 형식이 올바르지 않습니다." }));
   } else if (password === nickname) {
-    return res.status(412).json(({ errorMessage: "패스워드에 닉네임이 포함되어 있습니다." }));
+    return res.status(412).json(({ errorMessage: "패스워드는 닉네임과 다르게 설정해야 합니다." }));
   } else if (password !== confirmPassword) {
     return res.status(412).json({ errorMessage: "패스워드가 일치하지 않습니다." });
   }

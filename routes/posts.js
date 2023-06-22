@@ -87,10 +87,10 @@ router.put("/posts/:postId", authMiddleware, async (req, res) => {
 router.delete("/posts/:postId", authMiddleware, async (req, res) => {
   const user = res.locals.user;
   const { postId } = req.params;
-  const { password } = req.body;
+  // const { password } = req.body;
 
-  if (!ObjectId.isValid(postId) || !password) {
-    res.status(412).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+  if (!ObjectId.isValid(postId)) {
+    return res.status(412).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
   }
   const findPostId = await Posts.findOne({ _id: postId });
 

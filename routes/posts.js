@@ -48,15 +48,14 @@ router.get('/posts/:postId', async (req, res) => {
 
 // 게시글 작성 API
 router.post("/posts", authMiddleware, async (req, res) => {
-  let user = res.locals.user;
-  nickname = user.nickname;
+  const { nickname } = res.locals.user;
   const { title, content } = req.body;
 
-  if (title && content) {
+  if (!title || !content) {
+    return res.status(400).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+  } else {
     await Posts.create({ title, content, nickname });
     return res.status(200).json({ message: "게시글을 생성하였습니다." });
-  } else {
-    return res.status(400).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
   }
 });
 

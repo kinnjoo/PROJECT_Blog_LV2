@@ -5,10 +5,6 @@ const postSchema = new mongoose.Schema({
     type: String,
     ref: "User"
   },
-  password: {
-    type: String,
-    ref: "User"
-  },
   title: {
     type: String,
     required: true

@@ -35,7 +35,7 @@ router.get('/posts/:postId', async (req, res) => {
   if (detail) {
     const postDetail = {
       postId: detail._id,
-      user: detail.user,
+      nickname: detail.nickname,
       title: detail.title,
       content: detail.content,
       createdAt: detail.createdAt
@@ -80,7 +80,7 @@ router.put("/posts/:postId", authMiddleware, async (req, res) => {
   } else {
     await Posts.updateOne(
       { _id: postId },
-      { $set: { title: title, content: content } });
+      { $set: { title, content } });
     return res.status(200).json({ message: "게시글을 수정하였습니다." });
   }
 });

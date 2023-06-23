@@ -79,7 +79,7 @@ router.put("/comments/:commentId", authMiddleware, async (req, res) => {
   } else {
     await Comments.updateOne(
       { _id: commentId },
-      { $set: { content: content } });
+      { $set: { content } });
     return res.status(200).json({ message: "댓글을 수정하였습니다." });
   }
 });

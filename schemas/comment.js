@@ -5,10 +5,6 @@ const commentSchema = new mongoose.Schema({
     type: String,
     ref: "User"
   },
-  password: {
-    type: String,
-    ref: "User"
-  },
   content: {
     type: String,
     required: true

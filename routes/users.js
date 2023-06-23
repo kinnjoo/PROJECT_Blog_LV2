@@ -7,6 +7,11 @@ const User = require("../schemas/user.js");
 router.post("/signup", async (req, res) => {
   const { nickname, password, confirmPassword } = req.body;
 
+  // 3가지 항목 입력하지 않을시 오류
+  if (!nickname || !password || !confirmPassword) {
+    return res.status(400).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+  }
+
   // 닉네임 : 최소 3자 이상, 알파벳 대소문자, 숫자로 구성
   // 알파벳, 숫자로만 구성 조건 추가
   if (nickname.length < 3) {
@@ -28,11 +33,6 @@ router.post("/signup", async (req, res) => {
 
   if (isExistUser) {
     return res.status(412).json({ errorMessage: "중복된 닉네임입니다." });
-  }
-
-  // 3가지 항목 입력하지 않을시 오류
-  if (!nickname || !password || !confirmPassword) {
-    return res.status(400).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
   }
 
   // DB에 회원가입 정보 저장하기

@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 
 const User = require("../schemas/user.js");
+const secretKey = require("../secretKey.json");
 
 // 로그인 API
 router.post("/login", async (req, res) => {
@@ -13,11 +14,13 @@ router.post("/login", async (req, res) => {
 
   // 닉네임 일치하지 않거나 패스워드 일치하지 않을때
   if (!user || user.password !== password) {
-    return res.status(412).json({ errorMessage: "닉네임 또는 패스워드를 확인해주세요." })
+    return res
+      .status(412)
+      .json({ errorMessage: "닉네임 또는 패스워드를 확인해주세요." });
   }
 
   // JWT 생성
-  const token = jwt.sign({ userId: user._id }, "customized-secret-key");
+  const token = jwt.sign({ userId: user._id }, secretKey.key);
 
   res.cookie("Authorization", `Bearer ${token}`);
   res.status(200).json({ token });
